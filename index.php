@@ -38,16 +38,19 @@
 <body>
 
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "cloud";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Vérifier la connexion
-if ($conn->connect_error) {
-    die("La connexion a échoué : " . $conn->connect_error);
+$host = "cloudlucashugo.mysql.database.azure.com";
+$username = "admincloud";
+$password = "HugoLucas75";
+$db_name = "cloud";
+
+//Establishes the connection
+$conn = mysqli_init();
+mysqli_ssl_set($conn, NULL, NULL, 'Users\HugoB\Downloads\ssl.perm', NULL, NULL);
+mysqli_real_connect($conn, $host, $username, $password, $db_name, 3306);
+if (mysqli_connect_errno($conn)) {
+die('Failed to connect to MySQL: '.mysqli_connect_error());
 }
 
 // Requête SQL pour récupérer les utilisateurs
