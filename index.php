@@ -40,18 +40,21 @@
 <?php
 
 
-$host = "cloudlucashugo.mysql.database.azure.com";
-$username = "admincloud";
+$host = "lucashugomysqlserver.mysql.database.azure.com";
+$username = "admincloud@lucashugomysqlserver";
 $password = "HugoLucas75";
 $db_name = "cloud";
 
-//Establishes the connection
-$conn = mysqli_init();
-mysqli_ssl_set($conn, NULL, NULL, 'Users\HugoB\Downloads\ssl.perm', NULL, NULL);
-mysqli_real_connect($conn, $host, $username, $password, $db_name, 3306);
-if (mysqli_connect_errno($conn)) {
-die('Failed to connect to MySQL: '.mysqli_connect_error());
+
+try {
+    //Establishes the connection
+    $conn = mysqli_init();
+    mysqli_ssl_set($conn, NULL, NULL, 'ssl2.pem', NULL, NULL);
+    mysqli_real_connect($conn, $host, $username, $password, $db_name, 3306);
+} catch (mysqli_sql_exception $e) {
+    die('Erreur de connexion à la base de données : ' . $e->getMessage());
 }
+
 
 // Requête SQL pour récupérer les utilisateurs
 $sql = "SELECT id, nom, prenom, age, email FROM utilisateurs";
