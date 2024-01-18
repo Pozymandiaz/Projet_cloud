@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Utilisateurs</title>
+    <title>La cité</title>
     <style>
     body {
         font-family: Arial, sans-serif;
@@ -110,7 +110,7 @@ if (isset($_GET['search'])) {
 
 <!-- Formulaire de recherche -->
 <form action="" method="get">
-    <label for="search">Rechercher un utilisateur :</label>
+    <label for="search">Rechercher un boug :</label>
     <input type="text" id="search" name="search" placeholder="Entrez le nom, prénom ou email">
     <button type="submit">Rechercher</button>
 </form>
