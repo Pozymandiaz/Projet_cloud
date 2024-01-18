@@ -81,7 +81,7 @@
 
 <?php
 
-$host = "localhost";
+$host = "lucashugomysqlserver.mysql.database.azure.com";
 $username = "admincloud@lucashugomysqlserver";
 $password = "HugoLucas75";
 $db_name = "cloud";
