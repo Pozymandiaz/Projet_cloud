@@ -31,15 +31,6 @@ resource "azurerm_public_ip" "example" {
   allocation_method   = "Static"
 }
 
-/*
-resource "azurerm_ssh_public_key" "example" {
-  name                = "Damien-Baptiste-sshkey"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-  public_key          = file("C:/Users/bapti/.ssh/id_rsa.pub") 
-}
-*/
-
 resource "azurerm_subnet" "example" {
   name                 = "lucas-hugo-subnet"
   resource_group_name  = azurerm_resource_group.example.name
@@ -81,12 +72,7 @@ resource "azurerm_linux_virtual_machine" "example" {
     sku       = "22_04-lts"
     version   = "latest"
   }
-/*
-  admin_ssh_key {
-    username   = "fantik"
-    public_key = azurerm_ssh_public_key.example.public_key
-  } 
-  */
+
   disable_password_authentication = false
 }
 
@@ -118,36 +104,3 @@ resource "azurerm_mysql_database" "example" {
   charset             = "utf8"
   collation           = "utf8_unicode_ci"
 }
-
-
-
-/*
-resource "azurerm_mssql_server" "example" {
-  name                         = "fantik-sqlserver"
-  resource_group_name          = azurerm_resource_group.example.name
-  location                     = azurerm_resource_group.example.location
-  version                      = "12.0" 
-  administrator_login          = "fantik"
-  administrator_login_password = "JeSuisTropBeauEnfait94340@"
-
-  tags = {
-    environment = "production"
-  }
-}
-
-resource "azurerm_mssql_database" "example" {
-  name           = "fantik-database"
-  server_id      = azurerm_mssql_server.example.id
-  collation      = "SQL_Latin1_General_CP1_CI_AS"
-  sku_name       = "S0"
-  tags = {
-    environment = "production"
-  }
-}
-
-resource "azurerm_mssql_firewall_rule" "example" {
-  name                = "fantik-firewall-rule"
-  server_id           = azurerm_mssql_server.example.id
-  start_ip_address    = "0.0.0.0" 
-  end_ip_address      = "0.0.0.0"
-}*/
