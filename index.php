@@ -111,7 +111,7 @@ if (isset($_GET['search'])) {
 <!-- Formulaire de recherche -->
 <form action="" method="get">
     <label for="search">Rechercher un boug :</label>
-    <input type="text" id="search" name="search" placeholder="Entrez le nom, prénom ou email">
+    <input type="text" id="search" name="search" placeholder="Entrez le nom, prénom">
     <button type="submit">Rechercher</button>
 </form>
 
