@@ -1,3 +1,4 @@
+# Déclaration du fournisseur AzureRM et spécification de la version
 terraform {
   required_providers {
     azurerm = {
@@ -7,16 +8,19 @@ terraform {
   }
 }
 
+# Configuration du fournisseur AzureRM
 provider "azurerm" {
   skip_provider_registration = true
   features {}
 }
 
+# Définition d'un groupe de ressources Azure
 resource "azurerm_resource_group" "example" {
   name     = "lucashugo-rg"
   location = "francecentral"
 }
 
+# Définition d'un réseau virtuel Azure
 resource "azurerm_virtual_network" "example_vnet" {
   name                = "lucashugoVnet"
   address_space       = ["10.0.0.0/16"]
@@ -24,6 +28,7 @@ resource "azurerm_virtual_network" "example_vnet" {
   resource_group_name = azurerm_resource_group.example.name
 }
 
+# Définition d'une adresse IP publique Azure
 resource "azurerm_public_ip" "example" {
   name                = "lucashugo-publicip"
   resource_group_name = azurerm_resource_group.example.name
@@ -31,6 +36,7 @@ resource "azurerm_public_ip" "example" {
   allocation_method   = "Static"
 }
 
+# Définition d'un sous-réseau Azure
 resource "azurerm_subnet" "example" {
   name                 = "lucas-hugo-subnet"
   resource_group_name  = azurerm_resource_group.example.name
@@ -38,7 +44,7 @@ resource "azurerm_subnet" "example" {
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-
+# Définition d'une interface réseau Azure
 resource "azurerm_network_interface" "example" {
   name                = "lucas-hugo-nic"
   location            = azurerm_resource_group.example.location
@@ -52,6 +58,7 @@ resource "azurerm_network_interface" "example" {
   }
 }
 
+# Définition d'une machine virtuelle Linux Azure
 resource "azurerm_linux_virtual_machine" "example" {
   name                = "lucashugo-vm"
   resource_group_name = azurerm_resource_group.example.name
@@ -76,6 +83,7 @@ resource "azurerm_linux_virtual_machine" "example" {
   disable_password_authentication = false
 }
 
+# Définition d'un serveur MySQL Azure
 resource "azurerm_mysql_server" "example" {
   name                = "lucashugomysqlserver"
   location            = azurerm_resource_group.example.location
@@ -97,6 +105,7 @@ resource "azurerm_mysql_server" "example" {
   ssl_minimal_tls_version_enforced  = "TLS1_2"
 }
 
+# Définition d'une base de données MySQL Azure
 resource "azurerm_mysql_database" "example" {
   name                = "lucashugomysqldb"
   resource_group_name = azurerm_resource_group.example.name
