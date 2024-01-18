@@ -6,48 +6,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des Utilisateurs</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 20px;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+    .profiles-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        width: 100%;
+        max-width: 1200px; /* Ajustez la largeur maximale selon vos besoins */
+    }
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
+    .profile {
+        margin-bottom: 20px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        background-color: white;
+        width: 45%; /* Ajustez la largeur selon vos besoins pour deux profils côte à côte */
+        box-sizing: border-box;
+    }
 
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+    form {
+        margin-bottom: 20px;
+        width: 100%;
+        text-align: center;
+    }
+
+    label {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    input[type="text"] {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+
+    button {
+        padding: 8px 15px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    .noResult {
+        text-align: center;
+        margin-top: 40vh;
+    }
     </style>
 </head>
 <body>
 
 <?php
 
-
-$host = "lucashugomysqlserver.mysql.database.azure.com";
+$host = "localhost";
 $username = "admincloud@lucashugomysqlserver";
 $password = "HugoLucas75";
 $db_name = "cloud";
 
-
 try {
-    //Establishes the connection
+    // Establishes the connection
     $conn = mysqli_init();
     mysqli_ssl_set($conn, NULL, NULL, 'ssl2.pem', NULL, NULL);
     mysqli_real_connect($conn, $host, $username, $password, $db_name, 3306);
@@ -55,24 +95,47 @@ try {
     die('Erreur de connexion à la base de données : ' . $e->getMessage());
 }
 
+// Traitement de la recherche
+if (isset($_GET['search'])) {
+    $search = $_GET['search'];
+    $sql = "SELECT nom, prenom, age, email, url FROM utilisateurs WHERE nom LIKE '%$search%' OR prenom LIKE '%$search%' OR email LIKE '%$search%'";
+    $result = $conn->query($sql);
+} else {
+    // Requête SQL pour récupérer tous les utilisateurs si aucune recherche n'est effectuée
+    $sql = "SELECT nom, prenom, age, email, url FROM utilisateurs";
+    $result = $conn->query($sql);
+}
 
-// Requête SQL pour récupérer les utilisateurs
-$sql = "SELECT id, nom, prenom, age, email FROM utilisateurs";
-$result = $conn->query($sql);
+?>
+
+<!-- Formulaire de recherche -->
+<form action="" method="get">
+    <label for="search">Rechercher un utilisateur :</label>
+    <input type="text" id="search" name="search" placeholder="Entrez le nom, prénom ou email">
+    <button type="submit">Rechercher</button>
+</form>
+
+<?php
 
 if ($result->num_rows > 0) {
-    // Afficher les données sous forme de tableau
-    echo "<table><tr><th>ID</th><th>Nom</th><th>Prénom</th><th>Age</th><th>Email</th></tr>";
-    while($row = $result->fetch_assoc()) {
-        echo "<tr><td>".$row["id"]."</td><td>".$row["nom"]."</td><td>".$row["prenom"]."</td><td>".$row["age"]."</td><td>".$row["email"]."</td></tr>";
+    // Afficher les résultats de la recherche ou tous les utilisateurs
+    echo "<div class='profiles-container'>";
+    while ($row = $result->fetch_assoc()) {
+        echo "<div class='profile'>";
+        echo "<h2>".$row["nom"]." ".$row["prenom"]."</h2>";
+        echo "<img src='".$row["url"]."' alt='Photo de profil'>";
+        echo "<p>Age: ".$row["age"]."</p>";
+        echo "<p>Email: ".$row["email"]."</p>";
+        echo "</div>";
     }
-    echo "</table>";
+    echo "</div>";
 } else {
-    echo "Aucun résultat trouvé";
+    echo "<h1 class='noResult'>Aucun résultat trouvé</h1>";
 }
 
 // Fermer la connexion à la base de données
 $conn->close();
+
 ?>
 
 </body>
